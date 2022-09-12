@@ -15,7 +15,7 @@ $router->post('login', function() {
 
     $data = $db->select("users","*", [
         "email" => $_POST['email'],
-        "password" => md5($_POST['password'])
+        "password" => md5($_POST['password']),
     ]);
 
 if(isset($data[0])) {
