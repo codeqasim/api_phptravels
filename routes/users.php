@@ -2,10 +2,12 @@
 
 // ======================== LOGIN
 $router->post('login', function() {
-    include "../config.php";
+    include "../db.php";
 
     // file_put_contents("post.log", print_r($_POST, true));
 
+    die;
+    
     if(isset($_REQUEST['email']) && trim($_POST['email']) !== "") {} else { echo "email - param or value missing "; die; }
     if(isset($_REQUEST['password']) && trim($_POST['password']) !== "") {} else { echo "password - param or value missing "; die; }
 
@@ -74,8 +76,6 @@ $router->post('update-user', function() {
 
 });
 
-
-
 // ======================== UPLOAD IMAGE FOR PROFILES
 $router->post('forget-password', function() {
 
@@ -123,10 +123,6 @@ $router->post('forget-password', function() {
     echo json_encode($respose);
 
 });
-
-
-
-
 
 // ======================== SIGNUP
 $router->post('signup', function() {
