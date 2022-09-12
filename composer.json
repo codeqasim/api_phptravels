@@ -1,0 +1,11 @@
+{
+    "require": {
+        "php-curl-class/php-curl-class": "^9.4",
+        "sentry/sdk": "^3.2",
+        "mailgun/mailgun-php": "^3.5",
+        "symfony/http-client": "^6.0",
+        "nyholm/psr7": "^1.5",
+        "guzzlehttp/guzzle": "^7.4",
+        "catfan/medoo": "^2.1"
+    }
+}
