@@ -23,9 +23,9 @@ $mysqli = new mysqli($servername, $username, $password, $database);
 // Check connection
 if ($mysqli->connect_error) {
   die("Connection failed: " . $mysqli->connect_error);
-  $dbConnection = "MySQL Not Connected";
+  $dbConnection = "Database Not Connected";
 } else {
-  $dbConnection = "MySQL Connected";
+  $dbConnection = "Database Connected";
 }
 // echo "Connected successfully";
 
