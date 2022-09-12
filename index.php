@@ -23,9 +23,6 @@ use AppRouter\Router;
 \Sentry\init(['dsn' => 'https://134bf0fb9eec4621a7b13fa5afe64509@o1354411.ingest.sentry.io/6739401' ]);
 // throw new Exception("My first Sentry error!");
 
-// DD FUNCTION FOR DEBUG RESPONSES
-function dd($d) { print_r($d); }
-
 // CREATE ROOT PATH
 $root=(isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERVER['HTTP_HOST']; $root.= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']); define('root', $root);
 

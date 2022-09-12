@@ -2,15 +2,15 @@
 
 use Medoo\Medoo;
 
+// DD FUNCTION FOR DEBUG RESPONSES
+function dd($d) { print_r($d); }
+
 header("Content-Type: application/json");
 header('Access-Control-Allow-Origin: *');
 
 $whitelist = array( '127.0.0.1', '::1' );
 if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)){ 
-$host = "localhost";
-} else {
-$host = "api-4b8a059e84";
-}
+$host = "localhost"; } else { $host = "api-4b8a059e84"; }
 
 $servername = $host;
 $database = "production_api_database";
@@ -21,13 +21,8 @@ $password = "api_database";
 $mysqli = new mysqli($servername, $username, $password, $database);
 
 // Check connection
-if ($mysqli->connect_error) {
-  die("Connection failed: " . $mysqli->connect_error);
-  $dbConnection = "Database Not Connected";
-} else {
-  $dbConnection = "Database Connected";
-}
-// echo "Connected successfully";
+if ($mysqli->connect_error) { die("Connection failed: " . $mysqli->connect_error);
+  $dbConnection = "Database Not Connected"; } else { $dbConnection = "Database Connected"; }
 
 // Connect the database.
 $db = new Medoo([
