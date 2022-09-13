@@ -1,9 +1,12 @@
 <?php
 
+
+
 // ======================== LOGIN
 $router->post('login', function() {
-    include "db.php";
 
+    db();
+    
     // file_put_contents("post.log", print_r($_POST, true));
 
     if(isset($_REQUEST['email']) && trim($_POST['email']) !== "") {} else { echo "email - param or value missing "; die; }

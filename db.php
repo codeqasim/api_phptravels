@@ -32,3 +32,4 @@ $db = new Medoo([
   'username' => 'api_database',
   'password' => 'api_database'
 ]);
+
