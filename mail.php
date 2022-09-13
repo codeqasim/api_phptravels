@@ -4,9 +4,11 @@
 use Mailgun\Mailgun;
 
 $whitelist = array( '127.0.0.1', '::1' );
-if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)){ $dev = 1; } else { $dev = 0; }
-
-if ($dev = 1){ $link = 'http://localhost/api_phptravels/'; } else { $link = 'https://api.phptravels.com/'; }
+if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)){ 
+$link = 'http://localhost/api_phptravels/';
+} else {
+$link = 'https://api.phptravels.com/';
+}
 
 // MAILER
 function mailer($mail){
