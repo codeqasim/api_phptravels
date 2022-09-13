@@ -181,7 +181,7 @@ $router->post('user-update', function() {
         $log_user_id = $user_data[0]['id'];
         $log_type = "profile updated";
         $log_desc = $user_data[0];
-
+        
         // LOG SEND EMAIL
         $log_mail = true;
         $log_mail_name = $user_data[0]['first_name'];
@@ -192,7 +192,7 @@ $router->post('user-update', function() {
         
         include "./logs.php";
 
-        $respose = array ( "status"=>"true", "message"=>"profile updated", "data"=> $data );
+        $respose = array ( "status"=>"true", "message"=>"profile updated", "data"=> "" );
 
         } else {
         $respose = array ( "status"=>"false", "message"=>"no user found", "data"=> null );
@@ -205,10 +205,9 @@ $router->post('user-update', function() {
 // ======================== UPLOAD IMAGE FOR PROFILES
 $router->post('forget-password', function() {
 
-    // file_put_contents("post.log", print_r($_REQUEST, true));
-
-    include "db.php";
-
+    // INCLUDE CONFIG
+    include "./config.php";
+ 
     // CHECK EMAIL
     $user = $db->select("users", "*", [ "email" => $_POST['email'] ]);
 
@@ -225,19 +224,34 @@ $router->post('forget-password', function() {
                 // IF UPDATED SUCCESSFULLY
                 if ($data->rowCount() == 1) {
 
-                    $respose = array ( "status"=>"true", "message"=>"password updated", "data"=> $data );
+                    $respose = array ( "status"=>true, "message"=>"password updated", "data"=> $data );
 
-                    require_once "mail.php";
-                    $mail = [
-                        'name'=>'Hello '.$user[0]['first_name'],
-                        'email'=>$_POST['email'],
-                        'subject'=>'Password Reset',
-                        'content_title'=>'Reset Password',
-                        'content'=>'Your pasasword has been reset. find new password below',
-                        'link'=>$weblink.'login',
-                        'code'=> $newpass
-                    ];
-                    mailer($mail);
+                    // SAVE ACTIVITY LOGS
+                    $log_user_id = $user[0]['id'];
+                    $log_type = "password change";
+                    $log_desc = $user[0];
+                    
+                    // LOG SEND EMAIL
+                    $log_mail = true;
+                    $log_mail_name = $user[0]['first_name'];
+                    $log_send_email = $user[0]['email'];
+                    $log_mail_subject = "Password Changed";
+                    $log_mail_title = "New Password";
+                    $log_mail_content = "Temporary new password : " .$newpass;
+                    
+                    include "./logs.php";
+                    
+                    // require_once "mail.php";
+                    // $mail = [
+                    //     'name'=>'Hello '.$user[0]['first_name'],
+                    //     'email'=>$_POST['email'],
+                    //     'subject'=>'Password Reset',
+                    //     'content_title'=>'Reset Password',
+                    //     'content'=>'Your pasasword has been reset. find new password below',
+                    //     'link'=>$link.'login',
+                    //     'code'=> $newpass
+                    // ];
+                    // mailer($mail);
 
                 }
 
@@ -247,38 +261,6 @@ $router->post('forget-password', function() {
         }
 
     echo json_encode($respose);
-
-});
-
-
-
-// ======================== EMAIL VERIFICATION
-
-$router->post('activate', function() {
-
-    // file_put_contents("post.log", print_r($_POST, true));
-
-    if(isset($_POST['email']) && trim($_POST['email']) !== "") {} else { echo "email - param or value missing "; die; }
-    if(isset($_POST['code']) && trim($_POST['code']) !== "") {} else { echo "code - param or value missing "; die; }
-
-    // UPDATE USER STATUS
-    include "db.php";
-    $data = $db->update("users", [ "status" => 1, ], [
-    "email" => $_POST['email'],
-    "email_code" => $_POST['code']
-    ]);
-
-    if ($data->rowCount() == 1) {
-
-        // GET USER INFO
-        $mail = $db->select('users', [ 'email','id','status' ], [ 'email' => $_POST['email'], ]);
-
-        $respose = array ( "status"=>"true", "message"=>"account activated successfully.", "data"=> $mail[0] );
-        echo json_encode($respose);
-    } else {
-        $respose = array ( "status"=>"false", "message"=>"account activation failed.", "data"=> null );
-        echo json_encode($respose);
-    }
 
 });
 
