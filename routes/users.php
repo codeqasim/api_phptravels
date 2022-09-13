@@ -58,12 +58,12 @@ $router->post('signup', function() {
 
         require_once "./mail.php";
         $mail = [
-            'name'=>"qasim",
+            'name'=>$user_info[0]['first_name'],
             'email'=>$_POST['email'],
             'subject'=>'Account Activation',
             'content_title'=>'Account Activation',
             'content'=>'Thank you for the signup. Please click on the link below to activate your account.',
-            'link'=>"link".'activate?email='.$_POST['email'].'&code='.$mail_code,
+            'link'=> $link.'activate?email='.$_POST['email'].'&code='.$mail_code,
             'code'=> ''
         ];
         mailer($mail);
@@ -71,29 +71,24 @@ $router->post('signup', function() {
 });
 // ======================== SIGNUP
 
-$router->get('testmail', function() {
+// ======================== ACCOUNT ACTIVATE
+$router->get('activate', function() {
 
-    $SENDER_DOMAIN = "mail.phptravels.com";
-    $MAILGUN_FROM_EMAIL = "info@mail.phptravels.com";
-    $mg = Mailgun::create("key-528ca6d92f9006dea5fdb43e68464ee8"); // API PUBLIC KEY
+    // echo $_GET['email'];
+    // echo $_GET['code'];
 
-    $mg->messages()->send($SENDER_DOMAIN, [
-        'from'    => 'PHPTRAVELS <noreply@phptravels.com>',
-        'to'      => 'qasim <compoxition@gmail.com>',
-        'subject' => 'test',
-        'template'    => 'global',
-        'h:X-Mailgun-Variables'    => '{
-            "link": "link",
-            "code":"code",
-            "title":"test",
-            "content_title":"content title",
-            "content":"content"
-        }'
+    // INCLUDE CONFIG
+    include "./config.php";
+
+    $data = $db->select("users","*", [
+        "email" => $_GET['email'],
+        "email_code" =>  $_GET['code'],
     ]);
- 
-    print_r($mg);
+
+    dd($data[0]);
 
 });
+
 
 // ======================== LOGIN
 $router->post('login', function() {
@@ -113,14 +108,20 @@ $router->post('login', function() {
     
         $user_data = (object)$data[0]; $respose = array ( "status"=> true, "message"=>"user details", "data"=> $user_data );
 
-        // SAVE USER ACTIVITY TO LOGS
-        $date = date('Y-m-d H:i:s');
-        $db->insert("logs", [
-            "user_id" => $user_data->id,
-            "type" => "login",
-            "datetime" => $date,
-            "description" => json_encode($user_data),
-        ]);
+        // SAVE ACTIVITY LOGS
+        $log_user_id = $user_data->id;
+        $log_type = "login";
+        $log_desc = $user_data;
+
+        // LOG SEND EMAIL
+        $log_mail = true;
+        $log_mail_name = $user_data->first_name;
+        $log_send_email = $user_data->email;
+        $log_mail_subject = "User Login";
+        $log_mail_title = "Account Login";
+        $log_mail_content = "This is to inform you that you just logged at our portal with IP ". get_client_ip();
+        
+        include "./logs.php";
 
     } else {
     $respose = array ( "status"=>false, "message"=>"no user found", "data"=> null );
@@ -730,6 +731,30 @@ $router->post('contacts', function() {
 }
 
 echo json_encode($respose);
+
+});
+
+$router->get('testmail', function() {
+
+    $SENDER_DOMAIN = "mail.phptravels.com";
+    $MAILGUN_FROM_EMAIL = "info@mail.phptravels.com";
+    $mg = Mailgun::create("key-528ca6d92f9006dea5fdb43e68464ee8"); // API PUBLIC KEY
+
+    $mg->messages()->send($SENDER_DOMAIN, [
+        'from'    => 'PHPTRAVELS <noreply@phptravels.com>',
+        'to'      => 'qasim <compoxition@gmail.com>',
+        'subject' => 'test',
+        'template'    => 'global',
+        'h:X-Mailgun-Variables'    => '{
+            "link": "link",
+            "code":"code",
+            "title":"test",
+            "content_title":"content title",
+            "content":"content"
+        }'
+    ]);
+ 
+    print_r($mg);
 
 });
 
