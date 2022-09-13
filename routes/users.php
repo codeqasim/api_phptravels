@@ -77,10 +77,15 @@ $router->get('activate', function() {
     // INCLUDE CONFIG
     include "./config.php";
 
-    $data = $db->select("users","*", [
-        "email" => $_GET['email'],
-        "email_code" =>  $_GET['code'],
-    ]);
+    // EMAIL EXIST VALIDATION
+    $data = $db->select("users","*", [ "email" => $_GET['email'], "email_code" =>  $_GET['code'], ]);
+    if (isset($data[0]['status'])) { 
+        if ($data[0]['status'] == 1) { 
+            $respose = array ( "status"=>false, "message"=>"account already activated.", "data"=> "" );
+            echo json_encode($respose);
+            die;
+        }
+    }
 
     if (isset($data[0])) {
 
@@ -108,7 +113,7 @@ $router->get('activate', function() {
     echo json_encode($respose);
 
 });
-
+// ======================== ACCOUNT ACTIVATE
 
 // ======================== LOGIN
 $router->post('login', function() {
@@ -152,31 +157,43 @@ echo json_encode($respose);
 });
 // ======================== LOGIN
 
-$router->post('update-user', function() {
+$router->post('user-update', function() {
 
+    // INCLUDE CONFIG
+    include "./config.php";
 
+        // VALIDATION
+        required('user_id'); required('first_name'); required('last_name'); required('phone'); required('email');
 
-    if(isset($_POST['first_name']) || !empty($_POST['first_name'])) { $data['first_name'] = $_POST['first_name']; }
-    if(isset($_POST['last_name']) || !empty($_POST['last_name'])) { $data['last_name'] = $_POST['last_name']; }
-    if(isset($_POST['gender']) || !empty($_POST['gender'])) { $data['gender'] = $_POST['gender']; }
-    if(isset($_POST['email']) || !empty($_POST['email'])) { $data['email'] = $_POST['email']; }
-    if(isset($_POST['mobile']) || !empty($_POST['mobile'])) { $data['mobile'] = $_POST['mobile']; }
-    if(isset($_POST['password']) || !empty($_POST['password'])) { $data['password'] = md5($_POST['password']); }
-    if(isset($_POST['country_code']) || !empty($_POST['country_code'])) { $data['country_code'] = $_POST['country_code']; }
-    if(isset($_POST['state_code']) || !empty($_POST['state_code'])) { $data['state_code'] = $_POST['state_code']; }
-    if(isset($_POST['city_code']) || !empty($_POST['city_code'])) { $data['city_code'] = $_POST['city_code']; }
-    if(isset($_POST['skill_id']) || !empty($_POST['skill_id'])) { $data['skill_id'] = $_POST['skill_id']; }
-    if(isset($_POST['skill_tags']) || !empty($_POST['skill_tags'])) { $data['skill_tags'] = $_POST['skill_tags']; }
-    if(isset($_POST['img']) || !empty($_POST['img'])) { $data['img'] = $_POST['img']; }
+        if(isset($_POST['first_name']) || !empty($_POST['first_name'])) { $data['first_name'] = $_POST['first_name']; }
+        if(isset($_POST['last_name']) || !empty($_POST['last_name'])) { $data['last_name'] = $_POST['last_name']; }
+        if(isset($_POST['phone']) || !empty($_POST['phone'])) { $data['phone'] = $_POST['phone']; }
+        if(isset($_POST['email']) || !empty($_POST['email'])) { $data['email'] = $_POST['email']; }
+        if(isset($_POST['password']) || !empty($_POST['password'])) { $data['password'] = md5($_POST['password']); }
+    
+        $data = $db->update("users", $data , [ "user_id" => $_POST['user_id'], ]);
 
-    include "db.php";
-    $data = $db->update("users", $data , [
-    "id" => $_POST['id'],
-    ]);
+        $user_data = $db->select("users","*", [ "email" => $_POST['email'], ]);
 
     if ($data->rowCount() == 1) {
 
+        // SAVE ACTIVITY LOGS
+        $log_user_id = $user_data[0]['id'];
+        $log_type = "profile updated";
+        $log_desc = $user_data[0];
+
+        // LOG SEND EMAIL
+        $log_mail = true;
+        $log_mail_name = $user_data[0]['first_name'];
+        $log_send_email = $user_data[0]['email'];
+        $log_mail_subject = "Profile Updated";
+        $log_mail_title = "Account Details Updated";
+        $log_mail_content = "This is to inform you have updated your profile details logged with IP address ". get_client_ip();
+        
+        include "./logs.php";
+
         $respose = array ( "status"=>"true", "message"=>"profile updated", "data"=> $data );
+
         } else {
         $respose = array ( "status"=>"false", "message"=>"no user found", "data"=> null );
     }
