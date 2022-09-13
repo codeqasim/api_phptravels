@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 13, 2022 at 03:16 AM
+-- Generation Time: Sep 13, 2022 at 04:08 AM
 -- Server version: 8.0.29
 -- PHP Version: 8.1.8
 
@@ -54,8 +54,8 @@ CREATE TABLE `app_bookings` (
   `booking_extras_total_fee` double DEFAULT '0',
   `booking_extra_beds` int DEFAULT '0',
   `booking_extra_beds_charges` double DEFAULT '0',
-  `booking_curr_code` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci NOT NULL,
-  `booking_curr_symbol` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `booking_curr_code` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `booking_curr_symbol` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
   `booking_coupon` varchar(10) DEFAULT NULL,
   `booking_coupon_rate` double DEFAULT NULL,
   `booking_payment_date` bigint DEFAULT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE `app_modules` (
   `parent_id` enum('hotels','flights','tours','cars','visa','reviews','extra','rental','cruise') NOT NULL,
   `name` varchar(150) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '0',
-  `settings` text NOT NULL,
+  `settings` mediumtext NOT NULL,
   `order` varchar(300) NOT NULL,
   `c1` varchar(225) NOT NULL,
   `c2` varchar(225) NOT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE `app_modules` (
   `color` varchar(255) DEFAULT NULL,
   `module_currency` varchar(225) DEFAULT NULL,
   `payment_mode` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `app_modules`
@@ -146,53 +146,7 @@ CREATE TABLE `logs` (
   `type` varchar(255) DEFAULT NULL,
   `datetime` datetime NOT NULL,
   `description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `logs`
---
-
-INSERT INTO `logs` (`id`, `user_id`, `type`, `datetime`, `description`) VALUES
-(5, 1, 'login', '2022-09-12 04:09:27', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(6, 1, 'login', '2022-09-12 04:25:02', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(7, 1, 'login', '2022-09-12 04:25:08', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(8, 1, 'login', '2022-09-12 04:25:17', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(9, 1, 'login', '2022-09-12 04:27:15', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(10, 1, 'login', '2022-09-12 04:55:31', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(11, 1, 'login', '2022-09-12 05:05:39', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(12, 1, 'login', '2022-09-12 05:07:10', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(13, 1, 'login', '2022-09-12 05:07:55', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(14, 1, 'login', '2022-09-12 05:09:09', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(15, 1, 'login', '2022-09-12 05:09:24', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(16, 1, 'login', '2022-09-12 05:10:01', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(17, 1, 'login', '2022-09-12 05:10:39', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(18, 1, 'login', '2022-09-12 05:20:38', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(19, 1, 'login', '2022-09-12 05:23:23', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(20, 1, 'login', '2022-09-12 05:26:03', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(21, 1, 'login', '2022-09-12 05:26:16', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(22, 1, 'login', '2022-09-12 05:34:57', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(23, 1, 'login', '2022-09-12 05:35:25', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(24, 1, 'login', '2022-09-12 05:36:05', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(25, 1, 'login', '2022-09-12 05:37:28', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(26, 1, 'login', '2022-09-12 05:37:55', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(27, 1, 'login', '2022-09-12 05:41:42', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(28, 1, 'login', '2022-09-12 05:42:50', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(29, 1, 'login', '2022-09-12 05:44:26', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(30, 1, 'login', '2022-09-12 05:57:06', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(31, 1, 'login', '2022-09-12 06:11:20', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(32, 1, 'login', '2022-09-12 06:14:15', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(33, 1, 'login', '2022-09-12 06:22:35', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(34, 1, 'login', '2022-09-12 07:37:15', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(35, 1, 'login', '2022-09-12 07:55:26', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(36, 1, 'login', '2022-09-12 07:55:28', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(37, 1, 'login', '2022-09-12 07:55:30', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(38, 1, 'login', '2022-09-12 07:58:51', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(39, 1, 'login', '2022-09-12 07:59:32', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(40, 1, 'login', '2022-09-12 08:01:10', '{\"id\":1,\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\",\"company_name\":\"Ag'),
-(41, 1, 'login', '2022-09-12 08:02:52', '{\"id\":1,\"user_id\":\"425691\",\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\"'),
-(42, 1, 'login', '2022-09-12 08:04:29', '{\"id\":1,\"user_id\":\"425691\",\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\"'),
-(43, 1, 'login', '2022-09-12 08:28:23', '{\"id\":1,\"user_id\":\"425691\",\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\"'),
-(44, 1, 'login', '2022-09-12 09:03:15', '{\"id\":1,\"user_id\":\"425691\",\"first_name\":\"Supers\",\"last_name\":\"Admins\",\"email\":\"admin@phptravels.com\",\"password\":\"61152c80d1514e22fba66002597d0104\",\"status\":\"0\",\"country_code\":\"PK\",\"type\":\"admin\",\"currency\":\"1\",\"address1\":\"address 1\",\"address2\":\"address 2\"');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -217,7 +171,7 @@ CREATE TABLE `modules` (
   `payment_mode` enum('1','0') NOT NULL DEFAULT '0',
   `currency` varchar(255) DEFAULT NULL,
   `module_color` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `modules`
@@ -250,14 +204,14 @@ CREATE TABLE `settings` (
   `api_key` varchar(255) DEFAULT NULL,
   `business_name` varchar(70) NOT NULL,
   `home_title` varchar(250) DEFAULT NULL,
-  `site_url` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `site_url` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
   `tag_line` varchar(255) DEFAULT NULL,
   `address` varchar(255) NOT NULL,
   `phone` varchar(50) DEFAULT NULL,
   `seo_status` smallint NOT NULL DEFAULT '1',
   `meta_description` text,
-  `header_logo_img` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `favicon_img` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `header_logo_img` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `favicon_img` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
   `javascript` text,
   `reviews` enum('Yes','No') NOT NULL DEFAULT 'No',
   `default_language` varchar(100) NOT NULL DEFAULT 'en',
@@ -297,25 +251,25 @@ INSERT INTO `settings` (`id`, `user_id`, `api_key`, `business_name`, `home_title
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
-  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `first_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `last_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `email` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `first_name` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `last_name` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
   `email_code` varchar(255) DEFAULT NULL,
-  `password` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `status` enum('1','0') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0',
-  `country_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `type` enum('admin','admin_staff','agent','corporate','supplier') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `currency_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `password` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `status` enum('1','0') CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT '0',
+  `country_code` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
+  `type` enum('admin','admin_staff','agent','corporate','supplier') CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
+  `currency_id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
   `address1` varchar(255) DEFAULT NULL,
   `address2` varchar(255) DEFAULT NULL,
-  `company_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `company_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `company_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `company_commission` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `company_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
+  `company_phone` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
+  `company_email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
+  `company_commission` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `users`
@@ -333,8 +287,8 @@ INSERT INTO `users` (`id`, `user_id`, `first_name`, `last_name`, `email`, `phone
 
 CREATE TABLE `visitors` (
   `id` int NOT NULL,
-  `data_object` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `data_object` mediumtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Indexes for dumped tables
@@ -403,7 +357,7 @@ ALTER TABLE `app_modules`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `modules`

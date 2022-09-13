@@ -1,52 +1,139 @@
 <?php
 
+use Medoo\Medoo;
+use Mailgun\Mailgun;
 
+// ======================== SIGNUP
+$router->post('signup', function() {
+
+    // INCLUDE CONFIG
+    include "./config.php";
+
+        // VALIDATION
+        required('first_name'); required('last_name'); required('phone'); required('email'); required('password');
+
+        $mob = $new_str = str_replace(' ', '', $_POST['phone']); 
+        $phone = preg_replace('/[^A-Za-z0-9\-]/', '', $mob); // removes special chars.
+        $mail_code = rand(100000, 999999);
+ 
+        // EMAIL EXIST VALIDATION
+        $exist_mail = $db->select('users', [ 'email', ], [ 'email' => $_POST['email'], ]);
+        if (isset($exist_mail[0]['email'])) { 
+            $respose = array ( "status"=>false, "message"=>"email already exist.", "data"=> "" );
+            echo json_encode($respose);
+            die;
+        }
+
+        // GENERATE RANDOM CODE FOR EMAIL
+        $mail_code = rand(100000, 999999);
+
+        // UUID
+        $rand = rand(100, 99);
+        $date = date('Ymdhis');
+        $user_id = $date.$rand;
+
+        $password = md5($_POST['password']);
+        $date = date('Y-m-d H:i:s');
+
+        // REF ID CHECK
+        if (isset($_POST['agency_id']) && (!empty($_POST['agency_id']))) { $agency_id = $_POST['agency_id']; } else { $agency_id = ""; }
+
+        $db->insert("users", [
+            "user_id" => $user_id,
+            "agency_id" => $agency_id,
+            "first_name" => $_POST['first_name'],
+            "last_name" => $_POST['last_name'],
+            "email" => $_POST['email'],
+            "phone" => $phone,
+            "email_code" => $mail_code,
+            "password" => $password,
+            "created_at" => $date,
+        ]);
+
+        $user_id = $db->id();
+        $user_info = $db->select("users","*", [ "id" => $user_id ]);
+
+        $respose = array ( "status"=>true, "message"=>"account registered successfully.", "data"=> $user_info );
+        echo json_encode($respose);
+
+        require_once "./mail.php";
+        $mail = [
+            'name'=>"qasim",
+            'email'=>$_POST['email'],
+            'subject'=>'Account Activation',
+            'content_title'=>'Account Activation',
+            'content'=>'Thank you for the signup. Please click on the link below to activate your account.',
+            'link'=>"link".'activate?email='.$_POST['email'].'&code='.$mail_code,
+            'code'=> ''
+        ];
+        mailer($mail);
+
+});
+// ======================== SIGNUP
+
+$router->get('testmail', function() {
+
+    $SENDER_DOMAIN = "mail.phptravels.com";
+    $MAILGUN_FROM_EMAIL = "info@mail.phptravels.com";
+    $mg = Mailgun::create("key-528ca6d92f9006dea5fdb43e68464ee8"); // API PUBLIC KEY
+
+    $mg->messages()->send($SENDER_DOMAIN, [
+        'from'    => 'PHPTRAVELS <noreply@phptravels.com>',
+        'to'      => 'qasim <compoxition@gmail.com>',
+        'subject' => 'test',
+        'template'    => 'global',
+        'h:X-Mailgun-Variables'    => '{
+            "link": "link",
+            "code":"code",
+            "title":"test",
+            "content_title":"content title",
+            "content":"content"
+        }'
+    ]);
+ 
+    print_r($mg);
+
+});
 
 // ======================== LOGIN
 $router->post('login', function() {
 
-    db();
-    
-    // file_put_contents("post.log", print_r($_POST, true));
+    // INCLUDE CONFIG
+    include "./config.php";
 
-    if(isset($_REQUEST['email']) && trim($_POST['email']) !== "") {} else { echo "email - param or value missing "; die; }
-    if(isset($_REQUEST['password']) && trim($_POST['password']) !== "") {} else { echo "password - param or value missing "; die; }
-
-    // mobile and Password sent from form
-    $email = $_POST['email'];
-    $password = $_POST['password']; // 426868
+    // VALIDATION
+    required('email'); required('password');
 
     $data = $db->select("users","*", [
         "email" => $_POST['email'],
         "password" => md5($_POST['password']),
     ]);
 
-if(isset($data[0])) {
-    $user_data = (object)$data[0];
-    $respose = array ( "status"=>"true", "message"=>"user details", "data"=> $user_data );
+    if(isset($data[0])) { 
+    
+        $user_data = (object)$data[0]; $respose = array ( "status"=> true, "message"=>"user details", "data"=> $user_data );
 
-    // SAVE USER ACTIVITY TO LOGS
-    $date = date('Y-m-d H:i:s');
-    $db->insert("logs", [
-        "user_id" => $user_data->id,
-        "type" => "login",
-        "datetime" => $date,
-        "description" => json_encode($user_data),
-    ]);
+        // SAVE USER ACTIVITY TO LOGS
+        $date = date('Y-m-d H:i:s');
+        $db->insert("logs", [
+            "user_id" => $user_data->id,
+            "type" => "login",
+            "datetime" => $date,
+            "description" => json_encode($user_data),
+        ]);
 
     } else {
-    $respose = array ( "status"=>"false", "message"=>"no user found", "data"=> null );
+    $respose = array ( "status"=>false, "message"=>"no user found", "data"=> null );
 }
 
 echo json_encode($respose);
 
 });
+// ======================== LOGIN
 
 $router->post('update-user', function() {
 
-    // file_put_contents("post.log", print_r($_REQUEST, true));
 
-    $data = array();
 
     if(isset($_POST['first_name']) || !empty($_POST['first_name'])) { $data['first_name'] = $_POST['first_name']; }
     if(isset($_POST['last_name']) || !empty($_POST['last_name'])) { $data['last_name'] = $_POST['last_name']; }
@@ -125,67 +212,7 @@ $router->post('forget-password', function() {
 
 });
 
-// ======================== SIGNUP
-$router->post('signup', function() {
 
-    include "db.php";
-
-        // VALIDATION
-        if(isset($_POST['first_name']) && trim($_POST['first_name']) !== "") {} else { echo "first_name - param or value missing "; die; }
-        if(isset($_POST['last_name']) && trim($_POST['last_name']) !== "") {} else { echo "last_name - param or value missing "; die; }
-        if(isset($_POST['mobile']) && trim($_POST['mobile']) !== "") {} else { echo "mobile - param or value missing "; die; }
-        if(isset($_POST['email']) && trim($_POST['email']) !== "") {} else { echo "email - param or value missing "; die; }
-        if(isset($_POST['password']) && trim($_POST['password']) !== "") {} else { echo "password - param or value missing "; die; }
-
-    if ($_SERVER['REQUEST_METHOD']=$_POST){
-
-        $mob = $new_str = str_replace(' ', '', $_POST['mobile']);
-        $mobile = preg_replace('/[^A-Za-z0-9\-]/', '', $mob); // removes special chars.
-        $mail_code = rand(100000, 999999);
-        $mobile_code = rand(100000, 999999);
-
-        // EMAIL CHECK
-        $exist_mail = $db->select('users', [ 'email', ], [ 'email' => $_POST['email'], ]);
-        if (isset($exist_mail[0]['email'])) { echo "email already exist"; die; }
-
-        // GENERATE RANDOM CODE FOR EMAIL
-        $mail_code = rand(100000, 999999);
-        $password = md5($_POST['password']);
-        $date = date('Y-m-d H:i:s');
-
-        // REF ID CHECK
-        if (isset($_POST['ref_id']) && (!empty($_POST['ref_id']))) { $ref_id = $_POST['ref_id']; } else { $ref_id = ""; }
-
-        $db->insert("users", [
-            "ref_id" => $ref_id,
-            "first_name" => $_POST['first_name'],
-            "last_name" => $_POST['last_name'],
-            "email" => $_POST['email'],
-            "mobile" => $_POST['mobile'],
-            "email_code" => $mail_code,
-            "password" => $password,
-            "created_at" => $date,
-        ]);
-
-        $user_info = $mysqli->query('SELECT * FROM users WHERE id = "'.$db->id().'"')->fetch_object();
-
-        $respose = array ( "status"=>"true", "message"=>"account registered successfully.", "data"=> $user_info );
-        echo json_encode($respose);
-
-        require_once "mail.php";
-        $mail = [
-            'name'=>$user_info->first_name,
-            'email'=>$_POST['email'],
-            'subject'=>'Account Activation',
-            'content_title'=>'Account Activation',
-            'content'=>'Thank you for the signup. Please click on the link below to activate your account.',
-            'link'=>$weblink.'activate?email='.$_POST['email'].'&code='.$mail_code,
-            'code'=> ''
-        ];
-        mailer($mail);
-
-    }
-});
 
 // ======================== EMAIL VERIFICATION
 

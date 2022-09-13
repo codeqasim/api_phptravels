@@ -33,3 +33,7 @@ $db = new Medoo([
   'password' => 'api_database'
 ]);
 
+// FUNCTION FOR REQUIRED PARAMS
+function required($val){ if(isset($_REQUEST[$val]) && trim($_POST[$val]) !== "") {} else { echo $val." - param or value missing "; die; } }
+
+

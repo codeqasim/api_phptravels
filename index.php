@@ -12,7 +12,8 @@ header("Content-Type: application/json");
 header('Access-Control-Allow-Origin: *');
 header("X-Frame-Options: SAMEORIGIN");
 
-include "vendor/autoload.php";
+// AUTOLOAD
+include "./vendor/autoload.php";
 
 // AUTOLOADER
 use Mailgun\Mailgun;
@@ -21,7 +22,6 @@ use AppRouter\Router;
 
 // SENTRY DEBUG
 \Sentry\init(['dsn' => 'https://134bf0fb9eec4621a7b13fa5afe64509@o1354411.ingest.sentry.io/6739401' ]);
-// throw new Exception("My first Sentry error!");
 
 // CREATE ROOT PATH
 $root=(isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERVER['HTTP_HOST']; $root.= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']); define('root', $root);
@@ -38,10 +38,6 @@ $router->get('/', function() {
     $respose = array ( "status"=>"true", "message"=>"Welcome to API server","database" => $dbConnection );
     echo json_encode($respose);
 });
-
-function db(){
-    include "db.php";
-}
 
 // INCLUDE ROUTES
 include "./routes/users.php";
