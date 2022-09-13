@@ -74,9 +74,6 @@ $router->post('signup', function() {
 // ======================== ACCOUNT ACTIVATE
 $router->get('activate', function() {
 
-    // echo $_GET['email'];
-    // echo $_GET['code'];
-
     // INCLUDE CONFIG
     include "./config.php";
 
@@ -85,7 +82,30 @@ $router->get('activate', function() {
         "email_code" =>  $_GET['code'],
     ]);
 
-    dd($data[0]);
+    if (isset($data[0])) {
+
+        $data = $db->update("users", [ "status" => 1, ], [
+        "email" => $_GET['email'],
+        "email_code" => $_GET['code']
+        ]);
+        $respose = array ( "status"=>true, "message"=>"account has been verified.", "data"=> "" );
+
+        require_once "./mail.php";
+        $mail = [
+            'name'=>"Hello",
+            'email'=>$_GET['email'],
+            'subject'=>'Account Verified',
+            'content_title'=>'Account Activated',
+            'content'=>'This is to confirm your account has been verified now',
+            'link'=> '',
+            'code'=> ''
+        ];
+        mailer($mail);
+
+    } else { 
+        $respose = array ( "status"=>false, "message"=>"no user account found", "data"=> "" );
+    }
+    echo json_encode($respose);
 
 });
 
