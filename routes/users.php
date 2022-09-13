@@ -71,6 +71,38 @@ $router->post('signup', function() {
 });
 // ======================== SIGNUP
 
+// ======================== RESEND VERIFY
+$router->post('resend-verify', function() { 
+
+    // INCLUDE CONFIG
+    include "./config.php";
+
+    // VALIDATION
+    required('email');
+
+    $user_info = $db->select("users","*", [ "email" => $_POST['email'] ]);
+
+    if (isset($user_info[0]['email'])) {
+
+    require_once "./mail.php";
+        $mail = [
+            'name'=>$user_info[0]['first_name'],
+            'email'=>$user_info[0]['email'],
+            'subject'=>'Account Activation Resend',
+            'content_title'=>'Account Activation Resend',
+            'content'=>'Thank you for the signup. Please click on the link below to activate your account.',
+            'link'=> $link.'activate?email='.$_POST['email'].'&code='.$user_info[0]['email_code'],
+            'code'=> ''
+        ];
+        mailer($mail);
+
+        $respose = array ( "status"=>true, "message"=>"account activation link sent.", "data"=> $user_info );
+ 
+    } else { $respose = array ( "status"=>false, "message"=>"no account found with this email", "data"=> "" ); }
+         echo json_encode($respose);
+
+});
+
 // ======================== ACCOUNT ACTIVATE
 $router->get('activate', function() {
 
