@@ -8,6 +8,8 @@ function dd($d) { print_r($d); }
 header("Content-Type: application/json");
 header('Access-Control-Allow-Origin: *');
 
+define('api_stroage','https://storage.phptravels.com');
+
 $whitelist = array( '127.0.0.1', '::1' );
 if(in_array($_SERVER['REMOTE_ADDR'], $whitelist)){ 
 $host = "localhost"; } else { $host = "api-4b8a059e84"; }

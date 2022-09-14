@@ -6,6 +6,17 @@ $router->post('settings', function() {
     // INCLUDE CONFIG
     include "./config.php";
 
+    $parms = array( 
+        'user_id' => $_POST['user_id'],
+        'file' => $_FILES["logo"],
+    );
+
+    $req = new Curl();
+    $req->post(api_storage.'upload.php', $parms);
+
+    print_r($req->response);
+    die;
+
     $val = "business_name"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "site_offline"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "offline_message"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
