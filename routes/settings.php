@@ -8,16 +8,18 @@ $router->post('settings', function() {
     // INCLUDE CONFIG
     include "./config.php";
 
-    $parms = array( 
-        'user_id' => $_POST['user_id'],
-        'file' => $_FILES["logo"],
-    );
-
+    $val = "logo"; 
+    if(isset($_FILES['logo']) || !empty($_FILES['logo'])) { 
+        
+    // LOGO UPLOADED
+    $parms = array( 'file'=> new CurlFile($_FILES['logo']['tmp_name'], $_FILES['logo']['type'], $_FILES['logo']['name']), 'user_id' => $_POST['user_id'] );
     $req = new Curl();
     $req->post(api_stroage.'upload.php', $parms);
+    $logo = ($req->response->data);
 
-    print_r($req->response);
-    die;
+    $data['logo'] = $logo; }
+    
+    // $val = "favicon"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
 
     $val = "business_name"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "site_offline"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
