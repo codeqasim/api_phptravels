@@ -1,5 +1,6 @@
 <?php
 
+use Curl\Curl;
 use Medoo\Medoo;
 
 // DD FUNCTION FOR DEBUG RESPONSES
