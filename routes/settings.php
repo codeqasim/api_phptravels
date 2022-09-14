@@ -3,9 +3,6 @@
 // ======================== MAIN SETTINGS 
 $router->post('settings', function() {
 
-    // VALIDATION
-    required('user_id');
-    
     // INCLUDE CONFIG
     include "./config.php";
 
@@ -30,7 +27,8 @@ $router->post('settings', function() {
     $val = "social_linkedin"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "social_instagram"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "social_google"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
-
+ 
+    
     // UPDATE SETTINGS
     $data = $db->update("settings", $data , [ "user_id" => $_POST['user_id'], ]);
 
