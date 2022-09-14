@@ -14,7 +14,7 @@ $router->post('settings', function() {
     );
 
     $req = new Curl();
-    $req->post(api_storage.'upload.php', $parms);
+    $req->post(api_stroage.'upload.php', $parms);
 
     print_r($req->response);
     die;
