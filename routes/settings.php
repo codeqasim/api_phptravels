@@ -47,4 +47,20 @@ $router->post('settings', function() {
      
 });
 
+// ======================== MODULES
+$router->post('modules', function() {
+    
+    // INCLUDE CONFIG
+    include "./config.php";
+
+    $data = $db->select("modules","*", [ 
+        // "user_id" => $_POST['user_id'], 
+    ]);
+
+    $respose = array ( "status"=>true, "message"=>"modules data", "data"=> $data );
+    echo json_encode($respose);
+
+});
+
+
 ?>
