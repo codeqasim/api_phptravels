@@ -42,6 +42,7 @@ $router->get('/', function() {
 // INCLUDE ROUTES
 include "./routes/app.php";
 include "./routes/users.php";
+include "./routes/settings.php";
 
 $router->dispatchGlobal();
 

@@ -1,8 +1,6 @@
 <?php
 
-use Mailgun\Mailgun;
-
-// ======================== LOGIN
+// ======================== APP
 $router->post('app', function() {
 
     // INCLUDE CONFIG
@@ -20,7 +18,7 @@ $router->post('app', function() {
 echo json_encode($respose);
 
 });
-// ======================== LOGIN
+// ======================== APP
 
 
 ?>
