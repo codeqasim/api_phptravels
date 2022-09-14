@@ -51,6 +51,9 @@ $router->post('logo_upload', function() {
     // VALIDATION
     required('user_id');
 
+    // INCLUDE CONFIG
+    include "./config.php";
+
     $val = "logo"; 
     if(isset($_FILES['logo']) || !empty($_FILES['logo'])) { 
         
