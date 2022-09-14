@@ -8,9 +8,9 @@ $router->post('settings', function() {
     // INCLUDE CONFIG
     include "./config.php";
 
-    $val = "logo"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
-    $val = "favicon"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
-
+    if(isset($_POST['logo']) || !empty($_POST['logo'])) { $data['logo'] = $_POST['logo']; }
+    if(isset($_POST['favicon']) || !empty($_POST['favicon'])) { $data['favicon'] = $_POST['favicon']; }
+ 
     $val = "business_name"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "site_offline"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "offline_message"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
