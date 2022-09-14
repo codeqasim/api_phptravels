@@ -1,5 +1,7 @@
 <?php
 
+use Curl\Curl;
+
 // ======================== MAIN SETTINGS 
 $router->post('settings', function() {
 
