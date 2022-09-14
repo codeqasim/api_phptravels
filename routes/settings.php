@@ -3,6 +3,9 @@
 // ======================== MAIN SETTINGS 
 $router->post('settings', function() {
 
+    // VALIDATION
+    required('user_id');
+    
     // INCLUDE CONFIG
     include "./config.php";
 
@@ -28,18 +31,16 @@ $router->post('settings', function() {
     $val = "social_instagram"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
     $val = "social_google"; if(isset($_POST[$val]) || !empty($_POST[$val])) { $data[$val] = $_POST[$val]; }
 
-    // VALIDATION
-    required('user_id'); 
-
     // UPDATE SETTINGS
     $data = $db->update("settings", $data , [ "user_id" => $_POST['user_id'], ]);
 
-    // $data = $db->select("settings","*", [ "user_id" => $_POST['user_id'], ]);
-    // $respose = array ( "status"=>true, "message"=>"user app details", "data"=> $data );
-    // echo json_encode($respose);
-
+    if ($data->rowCount() == 1) {
+    $respose = array ( "status"=>true, "message"=>"settings udpated", "data"=> $data );
+    echo json_encode($respose);
+    }
+     
 });
-// ======================== APP
+ 
 
 
 ?>
